@@ -23,12 +23,12 @@
             overflow-x: hidden;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 1rem;
         }
         .nav-link {
-            padding: 0.75rem 1.25rem;
+            padding: 0.75rem 1.5rem;
             font-size: 0.875rem;
             font-weight: 500;
             color: #94a3b8;
@@ -37,7 +37,10 @@
             border-radius: 0.75rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
             margin: 0.25rem;
             backdrop-filter: blur(10px);
             position: relative;
@@ -152,7 +155,7 @@
         }
         /* New container for narrower subsection text */
         .subsection-text-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 1rem;
             line-height: 1.7;
@@ -488,6 +491,10 @@
             font-size: 0.875rem;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
         }
         .btn-primary {
             background: linear-gradient(135deg, #a855f7, #8b5cf6);
@@ -826,6 +833,74 @@
                 opacity: 0.5;
             }
         }
+
+        /* Sidebar Styles */
+        .sidebar-link {
+            position: relative;
+            min-height: 44px;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #c4b5fd;
+        }
+
+        .sidebar-link.active span {
+            opacity: 1;
+            background-color: #8b5cf6;
+        }
+
+        .sidebar-link:hover span {
+            opacity: 0.8;
+        }
+
+        /* Smooth scrollbar for sidebar */
+        #desktop-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #desktop-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #desktop-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 2px;
+        }
+
+        #desktop-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1023px) {
+            #desktop-sidebar {
+                display: none !important;
+            }
+        }
+        
+        /* Ultra-wide screen optimizations */
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1600px;
+            }
+            
+            /* Enhanced grid layouts for ultra-wide screens */
+            .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+        
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1800px;
+            }
+            
+            /* Even wider grid layouts for very large screens */
+            .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -834,11 +909,11 @@
     
     <header class="shadow-md sticky top-0 z-50 border-b border-slate-700/50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between py-3">
-                <h1 class="text-2xl md:text-3xl font-bold text-violet-400 tracking-wider">Adulting 101</h1>
+            <div class="flex items-center justify-between py-4 min-h-[60px]">
+                <h1 class="text-2xl md:text-3xl font-bold text-violet-400 tracking-wider cursor-pointer hover:text-violet-300 transition-colors duration-200 mr-8" onclick="goHome()">Adulting 101</h1>
                 
                 <!-- Mobile menu button -->
-                <button id="mobile-menu-button" class="md:hidden flex items-center px-3 py-2 border border-slate-600 rounded text-slate-300 hover:text-white hover:border-white focus:outline-none focus:ring-2 focus:ring-violet-400" aria-label="Toggle navigation menu" aria-expanded="false">
+                <button id="mobile-menu-button" class="lg:hidden flex items-center px-3 py-2 border border-slate-600 rounded text-slate-300 hover:text-white hover:border-white focus:outline-none focus:ring-2 focus:ring-violet-400" aria-label="Toggle navigation menu" aria-expanded="false">
                     <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -847,8 +922,8 @@
                     </svg>
                 </button>
                 
-                <!-- Desktop navigation -->
-                <nav class="hidden md:flex md:space-x-1" role="navigation" aria-label="Main navigation">
+                <!-- Desktop navigation - only show on xl screens now -->
+                <nav class="hidden xl:flex xl:space-x-1" role="navigation" aria-label="Main navigation">
                     <a href="#home" class="nav-link active">Home</a>
                     <a href="#health-insurance" class="nav-link">Health Insurance</a>
                     <a href="#retirement-investment" class="nav-link">Investment & Retirement</a>
@@ -862,10 +937,17 @@
                     <a href="#emergency" class="nav-link">Emergency Prep</a>
                     <a href="#digital-finance" class="nav-link">Digital Finance</a>
                 </nav>
+                
+                <!-- Sidebar toggle for lg screens -->
+                <button id="sidebar-toggle" class="hidden lg:flex xl:hidden items-center px-3 py-2 border border-slate-600 rounded text-slate-300 hover:text-white hover:border-white focus:outline-none focus:ring-2 focus:ring-violet-400" aria-label="Toggle sidebar navigation">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
             
             <!-- Mobile navigation menu -->
-            <nav id="mobile-nav" class="md:hidden hidden bg-slate-800 border-t border-slate-700 py-4" role="navigation" aria-label="Mobile navigation">
+            <nav id="mobile-nav" class="lg:hidden hidden bg-slate-800 border-t border-slate-700 py-4" role="navigation" aria-label="Mobile navigation">
                 <div class="flex flex-col space-y-2">
                     <a href="#home" class="nav-link-mobile active">🏠 Home</a>
                     <a href="#health-insurance" class="nav-link-mobile">🏥 Health Insurance</a>
@@ -884,7 +966,78 @@
         </div>
     </header>
 
-    <main id="main-content" class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
+    <!-- Sticky Sidebar for Desktop -->
+    <aside id="desktop-sidebar" class="hidden lg:block fixed left-0 top-[60px] h-[calc(100vh-60px)] w-64 bg-slate-900/95 backdrop-blur-sm border-r border-slate-700/50 z-40 overflow-y-auto">
+        <div class="p-4">
+            <div class="mb-6">
+                <h3 class="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Table of Contents</h3>
+                <nav role="navigation" aria-label="Sidebar navigation" class="space-y-1">
+                    <a href="#home" class="sidebar-link active flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-violet-400 rounded-full mr-3 opacity-60"></span>
+                        Home
+                    </a>
+                    <a href="#health-insurance" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-sky-400 rounded-full mr-3 opacity-60"></span>
+                        Health Insurance
+                    </a>
+                    <a href="#retirement-investment" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-emerald-400 rounded-full mr-3 opacity-60"></span>
+                        Investment & Retirement
+                    </a>
+                    <a href="#budgeting" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-amber-400 rounded-full mr-3 opacity-60"></span>
+                        Budgeting & Saving
+                    </a>
+                    <a href="#taxes" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-60"></span>
+                        Tax Optimization
+                    </a>
+                    <a href="#credit-debt" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-rose-400 rounded-full mr-3 opacity-60"></span>
+                        Credit & Debt
+                    </a>
+                    <a href="#housing" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-orange-400 rounded-full mr-3 opacity-60"></span>
+                        Housing
+                    </a>
+                    <a href="#insurance-beyond-health" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-cyan-400 rounded-full mr-3 opacity-60"></span>
+                        Insurance
+                    </a>
+                    <a href="#career" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-60"></span>
+                        Career
+                    </a>
+                    <a href="#legal" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-indigo-400 rounded-full mr-3 opacity-60"></span>
+                        Legal Basics
+                    </a>
+                    <a href="#emergency" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-red-400 rounded-full mr-3 opacity-60"></span>
+                        Emergency Prep
+                    </a>
+                    <a href="#digital-finance" class="sidebar-link flex items-center px-3 py-3 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800/50 transition-colors duration-200">
+                        <span class="w-2 h-2 bg-green-400 rounded-full mr-3 opacity-60"></span>
+                        Digital Finance
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Progress indicator -->
+            <div class="mt-8 p-3 bg-slate-800/50 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-medium text-slate-400">Reading Progress</span>
+                    <span id="progress-percentage" class="text-xs font-medium text-violet-400">0%</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-1.5">
+                    <div id="progress-bar" class="bg-gradient-to-r from-violet-400 to-purple-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main content with sidebar offset on desktop -->
+    <main id="main-content" class="lg:ml-64 container mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
         <section id="home" class="content-section">
             <h2>Welcome to Adulting 101!</h2>
             
@@ -1080,6 +1233,29 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Mental Health & Preventive Care</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Mental health coverage is legally required to be equal to medical coverage. Here's how to use it:</p>
+                    <h4 class="text-purple-300 font-semibold mt-6 mb-3">🧠 Mental Health Coverage:</h4>
+                    <ul>
+                        <li><strong>What's Covered</strong>: Therapy, counseling, psychiatric meds, inpatient treatment</li>
+                        <li><strong>Finding Providers</strong>: Use insurance directories, but call to confirm they're accepting patients</li>
+                        <li><strong>Telehealth</strong>: Many insurers now cover online therapy. Convenient and private</li>
+                        <li><strong>Free Resources</strong>: Employee Assistance Programs often include free counseling sessions</li>
+                </ul>
+                <h4>Maximizing Preventive Care:</h4>
+                <ul>
+                    <li><strong>Annual Wellness Visits</strong>: Covered 100% by ACA-compliant plans</li>
+                    <li><strong>Screenings</strong>: Mammograms, colonoscopies, blood pressure checks covered with no cost-sharing</li>
+                    <li><strong>Vaccinations</strong>: Most routine vaccines covered completely</li>
+                    <li><strong>Timing</strong>: Schedule before deductible resets (usually January 1st)</li>
+                </ul>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Marketplace Navigation & Subsidies</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -1125,7 +1301,7 @@
                 </div>
             </div>
 
-            <div class="collapsible-section">
+            <div class="collapsible-section last-accordion">
                 <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Medical Bill Analysis & Negotiation</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -1149,28 +1325,6 @@
                 </div>
             </div>
 
-            <div class="collapsible-section last-accordion">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Mental Health & Preventive Care</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Mental health coverage is legally required to be equal to medical coverage. Here's how to use it:</p>
-                    <h4 class="text-purple-300 font-semibold mt-6 mb-3">🧠 Mental Health Coverage:</h4>
-                    <ul>
-                        <li><strong>What's Covered</strong>: Therapy, counseling, psychiatric meds, inpatient treatment</li>
-                        <li><strong>Finding Providers</strong>: Use insurance directories, but call to confirm they're accepting patients</li>
-                        <li><strong>Telehealth</strong>: Many insurers now cover online therapy. Convenient and private</li>
-                        <li><strong>Free Resources</strong>: Employee Assistance Programs often include free counseling sessions</li>
-                </ul>
-                <h4>Maximizing Preventive Care:</h4>
-                <ul>
-                    <li><strong>Annual Wellness Visits</strong>: Covered 100% by ACA-compliant plans</li>
-                    <li><strong>Screenings</strong>: Mammograms, colonoscopies, blood pressure checks covered with no cost-sharing</li>
-                    <li><strong>Vaccinations</strong>: Most routine vaccines covered completely</li>
-                    <li><strong>Timing</strong>: Schedule before deductible resets (usually January 1st)</li>
-                </ul>
-            </div>
 
             <div class="transition-container mt-20 mb-16">
                 <div class="flex items-center justify-center mb-8">
@@ -1785,278 +1939,291 @@
 
         <section id="budgeting" class="content-section">
             <h2>Advanced Budgeting & Financial Planning</h2>
-            <p class="section-intro">Modern budgeting goes beyond simple expense tracking. Whether you're managing variable gig income, working remotely, or building multiple savings goals, this guide covers approaches from basic budgeting to advanced financial strategies. These methods work for many people navigating 2025's complex financial landscape.</p>
+            <p class="section-intro">Master modern budgeting from basic principles to advanced strategies. Whether managing variable income, optimizing debt payoff, or building comprehensive savings plans, this guide covers proven techniques for navigating 2025's complex financial landscape.</p>
 
-            <hr class="subsection-divider">
-            <h3>Modern Budgeting Challenges</h3>
-            <div class="subsection-text-container">
-                <p>Traditional budgeting advice assumes steady income and predictable expenses. Today's reality is more complex:</p>
-                <h4>Variable Income Management:</h4>
-                <ul>
-                    <li><strong>Gig Economy Workers:</strong> Uber, DoorDash, freelance income varies monthly</li>
-                    <li><strong>Commission-Based Jobs:</strong> Real estate, sales, consulting with seasonal fluctuations</li>
-                    <li><strong>Strategy:</strong> Budget based on lowest month, treat extra as windfalls for savings/debt</li>
-                    <li><strong>Income Smoothing:</strong> Save high months to supplement low months</li>
-                </ul>
-                <h4>Inflation-Adjusted Budgeting (2025 Reality):</h4>
-                <ul>
-                    <li><strong>Housing Costs:</strong> Many markets see 5-10% annual rent increases</li>
-                    <li><strong>Food Inflation:</strong> Grocery prices up 20%+ since 2020</li>
-                    <li><strong>Strategy:</strong> Build 5-10% annual expense increases into long-term planning</li>
-                    <li><strong>Cost Tracking:</strong> Monitor unit prices, not just total spending</li>
-                </ul>
-                <h4>Remote Work Considerations:</h4>
-                <ul>
-                    <li><strong>Home Office Costs:</strong> Internet upgrades, equipment, utilities</li>
-                    <li><strong>Tax Implications:</strong> Some home office expenses are deductible</li>
-                    <li><strong>Transportation Savings:</strong> Commute costs eliminated, but offset by home costs</li>
-                    <li><strong>Social Costs:</strong> Budget for co-working spaces or coffee shops</li>
-                </ul>
+            <div class="flex gap-2 mb-6">
+                <button onclick="toggleAllSections('budgeting', true)" class="btn-secondary text-sm py-2 px-4">Expand All</button>
+                <button onclick="toggleAllSections('budgeting', false)" class="btn-secondary text-sm py-2 px-4">Collapse All</button>
             </div>
 
-            <hr class="subsection-divider">
-            <h3>The Subscription Economy Challenge</h3>
-            <div class="subsection-text-container">
-                <p>The average American has 12+ active subscriptions costing $273/month. Managing these requires active attention:</p>
-                <h4>Subscription Audit Strategy:</h4>
-                <ul>
-                    <li><strong>Monthly Review:</strong> Check bank/credit card statements for recurring charges</li>
-                    <li><strong>Annual vs. Monthly:</strong> Many services offer 15-20% discounts for annual payment</li>
-                    <li><strong>Sharing Plans:</strong> Family Spotify, Netflix sharing can cut costs 50-75%</li>
-                    <li><strong>Rotation Strategy:</strong> Cancel/reactivate seasonal services (HBO for specific shows)</li>
-                </ul>
-                <h4>Common Subscription Categories:</h4>
-                <ul>
-                    <li><strong>Entertainment:</strong> Netflix, Spotify, YouTube Premium (~$40/month)</li>
-                    <li><strong>Software:</strong> Adobe, Microsoft Office, cloud storage (~$30/month)</li>
-                    <li><strong>Food:</strong> Meal kits, grocery delivery (~$50/month)</li>
-                    <li><strong>Fitness:</strong> Gym, apps, online classes (~$30/month)</li>
-                    <li><strong>News/Education:</strong> Newspapers, courses, audiobooks (~$20/month)</li>
-                </ul>
+            <!-- BEGINNER LEVEL ACCORDIONS -->
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Basic Budget Creation Steps</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Simple steps to create your first effective budget.</p>
+                    <ol>
+                        <li><strong>Track Your Income:</strong> Calculate monthly after-tax income from all sources</li>
+                        <li><strong>Track Your Expenses:</strong> Record all spending for one month using apps, receipts, or bank statements</li>
+                        <li><strong>Categorize Spending:</strong> Group expenses (housing, food, transportation, entertainment)</li>
+                        <li><strong>Set Financial Goals:</strong> Define specific targets (emergency fund, debt payoff, savings)</li>
+                        <li><strong>Allocate Your Money:</strong> Assign every dollar to expenses, savings, or debt payments</li>
+                        <li><strong>Review Monthly:</strong> Adjust categories and amounts based on actual spending patterns</li>
+                    </ol>
+                </div>
             </div>
 
-            <hr class="subsection-divider">
-            <h3>Advanced Budgeting Methods</h3>
-            <div class="subsection-text-container">
-                <p>Choose the budgeting method that matches your personality and financial complexity:</p>
-                <h4>Zero-Based Budgeting (YNAB Method):</h4>
-                <ul>
-                    <li><strong>Philosophy:</strong> Every dollar gets assigned a specific job before you spend it</li>
-                    <li><strong>Process:</strong> Income minus All Expenses (including savings) equals $0</li>
-                    <li><strong>Best For:</strong> Detail-oriented people, variable income, debt payoff focus</li>
-                    <li><strong>Tools:</strong> YNAB app ($14/month), Excel spreadsheets, paper tracking</li>
-                </ul>
-                <h4>Reverse Budgeting (Pay Yourself First):</h4>
-                <ul>
-                    <li><strong>Strategy:</strong> Automate savings/investing first, spend the rest</li>
-                    <li><strong>Process:</strong> Income minus Savings minus Fixed Expenses equals Spending Money</li>
-                    <li><strong>Best For:</strong> High income earners, savings-focused, minimal debt</li>
-                    <li><strong>Automation:</strong> Direct deposit splits, automatic transfers</li>
-                </ul>
-                <h4>Value-Based Budgeting:</h4>
-                <ul>
-                    <li><strong>Philosophy:</strong> Align spending with personal values and long-term goals</li>
-                    <li><strong>Process:</strong> Identify core values, allocate money accordingly</li>
-                    <li><strong>Example:</strong> Value travel over dining out, save $300/month eating home, spend $3,600 on annual vacation</li>
-                    <li><strong>Best For:</strong> People with clear priorities, lifestyle design focus</li>
-                </ul>
-                <h4>Updated 50/30/20 Rule for 2025:</h4>
-                <ul>
-                    <li><strong>50% Needs:</strong> Housing, utilities, transportation, groceries, insurance, minimum debt payments</li>
-                    <li><strong>30% Wants:</strong> Dining, entertainment, hobbies, subscriptions, discretionary shopping</li>
-                    <li><strong>20% Savings/Debt:</strong> Emergency fund, retirement, extra debt payments, goal-based savings</li>
-                    <li><strong>Reality Check:</strong> In high-cost areas, needs might be 60-70% of income</li>
-                </ul>
-            </div>
-            
-            <hr class="subsection-divider">
-            <h3>Example Budget Breakdown (50/30/20 Rule)</h3>
-            <div class="subsection-text-container">
-                <p>Let's say your monthly <strong>after-tax income</strong> is <strong>$3,500</strong>.</p>
-                <ul>
-                    <li><strong>Needs (50% = $1,750):</strong>
-                        <ul>
-                            <li>Rent/Mortgage: $1,000</li>
-                            <li>Utilities (electric, gas, water, internet): $200</li>
-                            <li>Groceries: $300</li>
-                            <li>Transportation (gas, public transit): $150</li>
-                            <li>Minimum Debt Payments (student loan, credit card): $100</li>
-                        </ul>
-                    </li>
-                    <li><strong>Wants (30% = $1,050):</strong>
-                        <ul>
-                            <li>Dining Out/Entertainment: $350</li>
-                            <li>Hobbies/Shopping: $300</li>
-                            <li>Streaming Services/Subscriptions: $50</li>
-                            <li>Travel Fund: $200</li>
-                            <li>Miscellaneous Fun: $150</li>
-                        </ul>
-                    </li>
-                    <li><strong>Savings & Debt Repayment (20% = $700):</strong>
-                        <ul>
-                            <li>Emergency Fund Savings: $250</li>
-                            <li>Retirement Savings (e.g., Roth IRA contribution): $250</li>
-                            <li>Extra Debt Payment (on highest interest debt): $200</li>
-                        </ul>
-                    </li>
-                </ul>
-                <p><strong>Note:</strong> This is just an example. Your categories and amounts will vary based on your income, location, lifestyle, and financial goals. The key is to track your actual spending and adjust your budget to fit your priorities.</p>
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> 50/30/20 Rule Updated for 2025</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">The classic budgeting framework adapted for modern costs.</p>
+                    <ul>
+                        <li><strong>50% Needs:</strong> Housing, utilities, transportation, groceries, insurance, minimum debt payments</li>
+                        <li><strong>30% Wants:</strong> Dining out, entertainment, hobbies, subscriptions, discretionary shopping</li>
+                        <li><strong>20% Savings/Debt:</strong> Emergency fund, retirement, extra debt payments, goal-based savings</li>
+                        <li><strong>High-Cost Area Reality:</strong> Needs may be 60-70% in expensive cities</li>
+                    </ul>
+                    <h4>Example Monthly Budget ($3,500 income):</h4>
+                    <ul>
+                        <li><strong>Needs ($1,750):</strong> Rent $1,000, Utilities $200, Groceries $300, Transport $150, Debt minimum $100</li>
+                        <li><strong>Wants ($1,050):</strong> Dining $350, Hobbies $300, Subscriptions $50, Travel fund $200, Misc $150</li>
+                        <li><strong>Savings ($700):</strong> Emergency fund $250, Retirement $250, Extra debt payment $200</li>
+                    </ul>
+                </div>
             </div>
 
-
-            <hr class="subsection-divider">
-            <h3>Steps to Create Your Budget</h3>
-            <div class="subsection-text-container">
-                <ol>
-                    <li><strong>Track Your Income:</strong> Know exactly how much money you bring in each month after taxes.</li>
-                    <li><strong>Track Your Expenses:</strong> For a month, record everything you spend. Use a notebook, spreadsheet, or budgeting app. Categorize your expenses (e.g., housing, food, fun).</li>
-                    <li><strong>Set Financial Goals:</strong> What do you want to achieve? (e.g., save $500 for an emergency fund, pay off a $1000 credit card).</li>
-                    <li><strong>Create Your Plan:</strong> Allocate your income to your expense categories, savings, and debt repayment goals. Adjust as needed to make sure your spending aligns with your priorities.</li>
-                    <li><strong>Review and Adjust:</strong> Your budget isn't set in stone. Review it regularly (e.g., weekly or monthly) and make adjustments as your income or expenses change.</li>
-                </ol>
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Emergency Fund Basics</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Build financial security with a tiered emergency fund approach.</p>
+                    <h4>Emergency Fund Tiers:</h4>
+                    <ul>
+                        <li><strong>Tier 1 (Starter):</strong> $1,000 for immediate small emergencies</li>
+                        <li><strong>Tier 2 (Basic):</strong> 1 month expenses for larger unexpected costs</li>
+                        <li><strong>Tier 3 (Full):</strong> 3-6 months expenses for major disruptions</li>
+                        <li><strong>Variable Income:</strong> 6-12 months if income unpredictable</li>
+                    </ul>
+                    <h4>Best 2025 High-Yield Options:</h4>
+                    <ul>
+                        <li><strong>Marcus by Goldman Sachs:</strong> 4.5%+ APY, FDIC insured</li>
+                        <li><strong>Ally Online Savings:</strong> 4.25%+ APY, excellent service</li>
+                        <li><strong>Discover Online:</strong> 4.3%+ APY, no fees</li>
+                        <li><strong>Brokerage Cash:</strong> 4.5%+ at major investment accounts</li>
+                    </ul>
+                </div>
             </div>
 
-            <hr class="subsection-divider">
-            <h3>Emergency Fund Strategy 2025</h3>
-            <div class="subsection-text-container">
-                <p>Emergency funds are more crucial than ever with economic uncertainty and gig economy volatility:</p>
-                <h4>Tiered Emergency Fund Approach:</h4>
-                <ul>
-                    <li><strong>Tier 1 (Starter Fund):</strong> $1,000 minimum for immediate small emergencies</li>
-                    <li><strong>Tier 2 (Basic Protection):</strong> 1 month of expenses for larger unexpected costs</li>
-                    <li><strong>Tier 3 (Full Emergency):</strong> 3-6 months expenses for major life disruptions</li>
-                    <li><strong>Variable Income:</strong> 6-12 months expenses if income is unpredictable</li>
-                </ul>
-                <h4>2025 High-Yield Savings Options:</h4>
-                <ul>
-                    <li><strong>Marcus by Goldman Sachs:</strong> 4.5%+ APY, no minimums, FDIC insured</li>
-                    <li><strong>Ally Online Savings:</strong> 4.25%+ APY, excellent customer service</li>
-                    <li><strong>Discover Online Savings:</strong> 4.3%+ APY, no fees</li>
-                    <li><strong>Brokerage Cash Management:</strong> 4.5%+ on uninvested cash at major brokers, investment account integration</li>
-                </ul>
-                <h4>Emergency vs. Debt Payoff Debate:</h4>
-                <ul>
-                    <li><strong>Mathematical Approach:</strong> If debt interest > savings rate, pay debt first</li>
-                    <li><strong>Psychological Approach:</strong> Small emergency fund first, then debt, then full fund</li>
-                    <li><strong>Balanced Approach:</strong> $1,000 emergency fund, then debt avalanche, then full fund</li>
-                    <li><strong>Risk Tolerance:</strong> Job stability affects optimal strategy</li>
-                </ul>
+            <!-- INTERMEDIATE LEVEL ACCORDIONS -->
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Modern Budgeting Challenges</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Navigate 2025's unique financial challenges with adaptive strategies.</p>
+                    <h4>Variable Income Management:</h4>
+                    <ul>
+                        <li><strong>Gig Workers:</strong> Budget based on lowest month, treat extra as windfalls</li>
+                        <li><strong>Commission Jobs:</strong> Use income smoothing to balance high/low months</li>
+                        <li><strong>Strategy:</strong> Create baseline budget + percentage-based scaling system</li>
+                    </ul>
+                    <h4>Inflation-Adjusted Planning:</h4>
+                    <ul>
+                        <li><strong>Housing:</strong> Budget for 5-10% annual rent increases</li>
+                        <li><strong>Food:</strong> Grocery costs up 20%+ since 2020, track unit prices</li>
+                        <li><strong>Planning:</strong> Build inflation buffers into long-term budgets</li>
+                    </ul>
+                    <h4>Remote Work Budgeting:</h4>
+                    <ul>
+                        <li><strong>New Costs:</strong> Home office equipment, higher utilities, internet upgrades</li>
+                        <li><strong>Savings:</strong> Commute elimination, reduced professional wardrobe</li>
+                        <li><strong>Social Budget:</strong> Co-working spaces, coffee shops for productivity</li>
+                    </ul>
+                </div>
             </div>
 
-            <hr class="subsection-divider">
-            <h3>Advanced Savings Strategies</h3>
-            <div class="subsection-text-container">
-                <p>Beyond emergency funds, strategic savings helps achieve major life goals:</p>
-                <h4>Goal-Based Savings Accounts:</h4>
-                <ul>
-                    <li><strong>House Down Payment:</strong> Separate high-yield account, 2-5 year timeline</li>
-                    <li><strong>Car Replacement:</strong> Sinking fund, contribute monthly for next vehicle</li>
-                    <li><strong>Vacation Fund:</strong> Annual or multi-year trip planning</li>
-                    <li><strong>Wedding/Kids:</strong> Major life event preparation</li>
-                </ul>
-                <h4>Sinking Funds for Annual Expenses:</h4>
-                <ul>
-                    <li><strong>Car Insurance/Registration:</strong> $1,200/year = $100/month</li>
-                    <li><strong>Holiday/Birthday Gifts:</strong> $1,800/year = $150/month</li>
-                    <li><strong>Home/Car Maintenance:</strong> $2,400/year = $200/month</li>
-                    <li><strong>Professional Development:</strong> $1,200/year = $100/month</li>
-                </ul>
-                <h4>Automation Systems:</h4>
-                <ul>
-                    <li><strong>Direct Deposit Splits:</strong> Employer sends money to multiple accounts</li>
-                    <li><strong>Automatic Transfers:</strong> Weekly/monthly transfers to savings goals</li>
-                    <li><strong>Round-Up Programs:</strong> Qapital, Acorns round purchases to nearest dollar</li>
-                    <li><strong>Percentage-Based Saving:</strong> Save 20% of any windfall (bonus, tax refund, gift)</li>
-                </ul>
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Goal-Based Savings Strategies</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Systematic savings for major life goals and recurring expenses.</p>
+                    <h4>Targeted Savings Accounts:</h4>
+                    <ul>
+                        <li><strong>House Down Payment:</strong> Separate high-yield account, 2-5 year timeline</li>
+                        <li><strong>Vehicle Replacement:</strong> Monthly sinking fund for next car purchase</li>
+                        <li><strong>Vacation Fund:</strong> Annual or multi-year trip planning</li>
+                        <li><strong>Life Events:</strong> Wedding, kids, major purchases</li>
+                    </ul>
+                    <h4>Annual Expense Sinking Funds:</h4>
+                    <ul>
+                        <li><strong>Insurance/Registration:</strong> $1,200/year = $100/month</li>
+                        <li><strong>Holiday Gifts:</strong> $1,800/year = $150/month</li>
+                        <li><strong>Home/Car Maintenance:</strong> $2,400/year = $200/month</li>
+                        <li><strong>Professional Development:</strong> $1,200/year = $100/month</li>
+                    </ul>
+                    <h4>SMART Goals Framework:</h4>
+                    <ul>
+                        <li><strong>Specific:</strong> "Save $50,000 for house down payment"</li>
+                        <li><strong>Measurable:</strong> Track progress monthly with exact amounts</li>
+                        <li><strong>Achievable:</strong> Realistic based on income and timeline</li>
+                        <li><strong>Time-bound:</strong> Clear deadline like "by December 2027"</li>
+                    </ul>
+                </div>
             </div>
 
-            <hr class="subsection-divider">
-            <h3>Debt Optimization Strategies</h3>
-            <div class="subsection-text-container">
-                <p>Modern debt management goes beyond simple snowball vs. avalanche methods:</p>
-                <h4>Student Loan Optimization:</h4>
-                <ul>
-                    <li><strong>Income-Driven Repayment:</strong> PAYE, REPAYE, IBR plans based on income</li>
-                    <li><strong>Public Service Loan Forgiveness:</strong> 120 qualifying payments for government/nonprofit workers</li>
-                    <li><strong>Refinancing Analysis:</strong> Private refinancing vs. federal protections trade-off</li>
-                    <li><strong>Tax Strategy:</strong> Student loan interest deduction up to $2,500/year</li>
-                </ul>
-                <h4>Credit Card Balance Transfer Strategy:</h4>
-                <ul>
-                    <li><strong>0% APR Periods:</strong> 15-21 months common, pay transfer fees (3-5%)</li>
-                    <li><strong>Qualification Requirements:</strong> Good credit (700+) typically needed</li>
-                    <li><strong>Payoff Timeline:</strong> Must eliminate debt before promotional rate expires</li>
-                    <li><strong>Discipline Required:</strong> Don't rack up new debt on cleared cards</li>
-                </ul>
-                <h4>Debt Consolidation Analysis:</h4>
-                <ul>
-                    <li><strong>Personal Loans:</strong> Fixed rates, fixed terms, single payment</li>
-                    <li><strong>When It Helps:</strong> Multiple high-interest debts, good credit for lower rate</li>
-                    <li><strong>When It Hurts:</strong> Extending timeline, losing payment discipline</li>
-                    <li><strong>Home Equity Risk:</strong> HELOC/cash-out refinance puts home at risk</li>
-                </ul>
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Subscription Management</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Manage the subscription economy effectively - average American pays $273/month for 12+ services.</p>
+                    <h4>Subscription Audit Strategy:</h4>
+                    <ul>
+                        <li><strong>Monthly Review:</strong> Check bank statements for recurring charges</li>
+                        <li><strong>Annual vs Monthly:</strong> Many services offer 15-20% discounts for yearly payment</li>
+                        <li><strong>Family Sharing:</strong> Netflix, Spotify family plans cut costs 50-75%</li>
+                        <li><strong>Rotation Strategy:</strong> Cancel/reactivate seasonal services (HBO for specific shows)</li>
+                    </ul>
+                    <h4>Common Categories & Costs:</h4>
+                    <ul>
+                        <li><strong>Entertainment:</strong> Netflix, Spotify, YouTube Premium (~$40/month)</li>
+                        <li><strong>Software:</strong> Adobe, Microsoft Office, cloud storage (~$30/month)</li>
+                        <li><strong>Food Delivery:</strong> Meal kits, grocery delivery (~$50/month)</li>
+                        <li><strong>Fitness:</strong> Gym memberships, apps, classes (~$30/month)</li>
+                        <li><strong>News/Education:</strong> Newspapers, courses, audiobooks (~$20/month)</li>
+                    </ul>
+                    <h4>Optimization Tips:</h4>
+                    <ul>
+                        <li><strong>Free Trials:</strong> Set calendar reminders before auto-renewal</li>
+                        <li><strong>Student Discounts:</strong> Many services offer 50% off with .edu email</li>
+                        <li><strong>Bundle Analysis:</strong> Compare individual vs package pricing</li>
+                    </ul>
+                </div>
             </div>
 
-            <hr class="subsection-divider">
-            <h3>Financial Goal Setting & Progress Tracking</h3>
-            <div class="subsection-text-container">
-                <p>Effective goal setting turns dreams into achievable milestones:</p>
-                <h4>SMART Financial Goals Framework:</h4>
-                <ul>
-                    <li><strong>Specific:</strong> "Save for house down payment" not "save money"</li>
-                    <li><strong>Measurable:</strong> "Save $50,000" with exact dollar amount</li>
-                    <li><strong>Achievable:</strong> Realistic based on income and expenses</li>
-                    <li><strong>Relevant:</strong> Aligned with your values and life plans</li>
-                    <li><strong>Time-bound:</strong> "By December 2027" with clear deadline</li>
-                </ul>
-                <h4>Goal Prioritization Matrix:</h4>
-                <ul>
-                    <li><strong>Essential (Do First):</strong> Emergency fund, employer 401k match, high-interest debt</li>
-                    <li><strong>Important (Do Second):</strong> Retirement savings, moderate debt, insurance</li>
-                    <li><strong>Nice-to-Have (Do Third):</strong> Vacation fund, home improvements, luxury purchases</li>
-                    <li><strong>Someday (Do Later):</strong> Long-term dreams, low-priority wants</li>
-                </ul>
-                <h4>Progress Tracking Systems:</h4>
-                <ul>
-                    <li><strong>Monthly Net Worth Calculation:</strong> Assets minus Liabilities equals Net Worth trend</li>
-                    <li><strong>Goal Progress Spreadsheet:</strong> Track percentage completion monthly</li>
-                    <li><strong>Visual Tracking:</strong> Charts, thermometer drawings, progress bars</li>
-                    <li><strong>Milestone Celebrations:</strong> Reward yourself for achieving interim goals</li>
-                </ul>
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Specialized Budgeting Tools</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Choose budgeting tools that match your style and complexity needs.</p>
+                    <h4>Comprehensive Apps:</h4>
+                    <ul>
+                        <li><strong>YNAB:</strong> $14/month, zero-based budgeting, excellent for debt payoff</li>
+                        <li><strong>Mint (Free):</strong> Automatic categorization, bill tracking, credit monitoring</li>
+                        <li><strong>PocketGuard:</strong> "In My Pocket" feature prevents overspending</li>
+                        <li><strong>Personal Capital:</strong> Investment focus, net worth tracking</li>
+                    </ul>
+                    <h4>Specialized Solutions:</h4>
+                    <ul>
+                        <li><strong>Tiller:</strong> Spreadsheet-based with bank feeds, Google Sheets integration</li>
+                        <li><strong>EveryDollar:</strong> Dave Ramsey method, debt snowball focus</li>
+                        <li><strong>Goodbudget:</strong> Digital envelope system, household sharing</li>
+                        <li><strong>Simplifi:</strong> Goal tracking, watchlist features</li>
+                    </ul>
+                    <h4>Bank Native Tools:</h4>
+                    <ul>
+                        <li><strong>Chase Blueprint:</strong> Spending insights, automated savings goals</li>
+                        <li><strong>Bank of America:</strong> Life Plan goals, spending categorization</li>
+                        <li><strong>Wells Fargo:</strong> Control Tower with FICO score integration</li>
+                        <li><strong>Capital One:</strong> Eno assistant, real-time spending notifications</li>
+                    </ul>
+                </div>
             </div>
-            
-            <hr class="subsection-divider">
-            <h3>Advanced Budgeting Tools & Technology</h3>
-            <div class="subsection-text-container">
-                <p>Choose tools that match your budgeting style and technical comfort:</p>
-                <h4>Comprehensive Budgeting Apps:</h4>
-                <ul>
-                    <li><strong>YNAB (You Need A Budget):</strong> $14/month, zero-based budgeting, envelope method, excellent for debt payoff</li>
-                    <li><strong>Mint (Free):</strong> Intuit product, automatic categorization, bill tracking, credit score monitoring</li>
-                    <li><strong>PocketGuard:</strong> "In My Pocket" feature, prevents overspending, subscription tracking</li>
-                    <li><strong>Personal Capital (Free):</strong> Investment tracking focus, net worth dashboard, retirement planning</li>
-                </ul>
-                <h4>Specialized Tools:</h4>
-                <ul>
-                    <li><strong>Tiller:</strong> Spreadsheet-based budgeting, Google Sheets integration, bank feeds</li>
-                    <li><strong>EveryDollar:</strong> Dave Ramsey's zero-based budget app, debt snowball focus</li>
-                    <li><strong>Goodbudget:</strong> Digital envelope method, household expense sharing</li>
-                    <li><strong>Simplifi:</strong> Quicken's modern budgeting app, goal tracking, watchlist features</li>
-                </ul>
-                <h4>Bank Native Tools:</h4>
-                <ul>
-                    <li><strong>Chase Blueprint:</strong> Spending insights, savings goals, automatic rules</li>
-                    <li><strong>Bank of America:</strong> Life Plan goal setting, spending categories</li>
-                    <li><strong>Wells Fargo Control Tower:</strong> FICO score, budgeting, financial health score</li>
-                    <li><strong>Capital One:</strong> Eno virtual assistant, spending notifications, budget tracking</li>
-                </ul>
-                <h4>DIY Spreadsheet Templates:</h4>
-                <ul>
-                    <li><strong>Google Sheets:</strong> Free, collaborative, mobile access, automatic formulas</li>
-                    <li><strong>Excel:</strong> Advanced features, pivot tables, macros, one-time purchase</li>
-                    <li><strong>Templates:</strong> Vertex42, Mint templates, Reddit personal finance community</li>
-                    <li><strong>Customization:</strong> Tailor categories, goals, and tracking to your exact needs</li>
-                </ul>
+
+            <!-- ADVANCED LEVEL ACCORDIONS -->
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Zero-Based & Value-Based Budgeting</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Advanced budgeting methods for detailed control and values alignment.</p>
+                    <h4>Zero-Based Budgeting (YNAB Method):</h4>
+                    <ul>
+                        <li><strong>Philosophy:</strong> Every dollar assigned a specific job before spending</li>
+                        <li><strong>Process:</strong> Income minus all expenses (including savings) = $0</li>
+                        <li><strong>Best For:</strong> Detail-oriented people, variable income, aggressive debt payoff</li>
+                        <li><strong>Tools:</strong> YNAB app, Excel templates, envelope tracking</li>
+                    </ul>
+                    <h4>Value-Based Budgeting:</h4>
+                    <ul>
+                        <li><strong>Philosophy:</strong> Align spending with personal values and long-term goals</li>
+                        <li><strong>Process:</strong> Identify core values, allocate money accordingly</li>
+                        <li><strong>Example:</strong> Value travel over dining: save $300/month eating home for $3,600 annual vacation</li>
+                        <li><strong>Best For:</strong> Clear priorities, lifestyle design focus</li>
+                    </ul>
+                    <h4>Reverse Budgeting:</h4>
+                    <ul>
+                        <li><strong>Strategy:</strong> Automate savings/investing first, spend the remainder</li>
+                        <li><strong>Process:</strong> Income - Savings - Fixed Expenses = Spending Money</li>
+                        <li><strong>Best For:</strong> High earners, savings-focused, minimal debt</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Debt Optimization Strategies</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Strategic debt management beyond basic snowball/avalanche methods.</p>
+                    <h4>Student Loan Optimization:</h4>
+                    <ul>
+                        <li><strong>Income-Driven Plans:</strong> PAYE, REPAYE, IBR based on income</li>
+                        <li><strong>PSLF:</strong> 120 qualifying payments for government/nonprofit workers</li>
+                        <li><strong>Refinancing Analysis:</strong> Private rates vs federal protections trade-off</li>
+                        <li><strong>Tax Strategy:</strong> Deduct up to $2,500/year in interest</li>
+                    </ul>
+                    <h4>Credit Card Balance Transfers:</h4>
+                    <ul>
+                        <li><strong>0% APR Periods:</strong> 15-21 months common, 3-5% transfer fees</li>
+                        <li><strong>Requirements:</strong> Good credit (700+) typically needed</li>
+                        <li><strong>Critical:</strong> Must pay off before promotional rate expires</li>
+                        <li><strong>Discipline:</strong> Avoid accumulating new debt on cleared cards</li>
+                    </ul>
+                    <h4>Debt Consolidation Analysis:</h4>
+                    <ul>
+                        <li><strong>Personal Loans:</strong> Fixed rates, terms, single payment</li>
+                        <li><strong>When Helpful:</strong> Multiple high-interest debts, qualify for lower rate</li>
+                        <li><strong>Risks:</strong> Extending timeline, losing payment discipline</li>
+                        <li><strong>Home Equity Warning:</strong> HELOC puts your home at risk</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Advanced Automation Systems</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Sophisticated automation and tracking systems for hands-off budgeting.</p>
+                    <h4>Multi-Account Automation:</h4>
+                    <ul>
+                        <li><strong>Direct Deposit Splits:</strong> Employer distributes to multiple accounts automatically</li>
+                        <li><strong>Automatic Transfers:</strong> Scheduled weekly/monthly transfers to goals</li>
+                        <li><strong>Round-Up Programs:</strong> Qapital, Acorns round purchases for micro-investing</li>
+                        <li><strong>Percentage Rules:</strong> Save 20% of any windfall (bonus, tax refund, gifts)</li>
+                    </ul>
+                    <h4>Goal Prioritization Matrix:</h4>
+                    <ul>
+                        <li><strong>Essential (Tier 1):</strong> Emergency fund, employer 401k match, high-interest debt</li>
+                        <li><strong>Important (Tier 2):</strong> Retirement savings, moderate debt, adequate insurance</li>
+                        <li><strong>Beneficial (Tier 3):</strong> Goal savings, home improvements, investment accounts</li>
+                        <li><strong>Optional (Tier 4):</strong> Luxury purchases, advanced investment strategies</li>
+                    </ul>
+                    <h4>Progress Tracking Systems:</h4>
+                    <ul>
+                        <li><strong>Net Worth Tracking:</strong> Monthly assets minus liabilities calculation</li>
+                        <li><strong>Goal Dashboards:</strong> Visual progress tracking with percentage completion</li>
+                        <li><strong>Milestone Rewards:</strong> Celebrate interim achievements to maintain motivation</li>
+                        <li><strong>Annual Reviews:</strong> Comprehensive financial health assessments</li>
+                    </ul>
+                </div>
             </div>
 
             <hr class="subsection-divider">
@@ -2644,6 +2811,82 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Renter's Insurance Essentials</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Renter's insurance is cheap protection for your belongings and liability:</p>
+                    <h4>Coverage Types:</h4>
+                    <ul>
+                        <li><strong>Personal Property:</strong> Covers belongings (electronics, clothes, furniture)</li>
+                        <li><strong>Liability Protection:</strong> Covers damages you cause to others' property</li>
+                        <li><strong>Additional Living Expenses:</strong> Temporary housing if apartment becomes uninhabitable</li>
+                        <li><strong>Medical Payments:</strong> Small injuries to guests in your apartment</li>
+                    </ul>
+                    <h4>Cost Analysis (2025):</h4>
+                    <ul>
+                        <li><strong>Average Cost:</strong> $15-30/month ($180-360/year)</li>
+                        <li><strong>Coverage Amounts:</strong> $25,000-50,000 personal property typical</li>
+                        <li><strong>Deductibles:</strong> $250-1,000 (higher deductible = lower premium)</li>
+                        <li><strong>Bundling Discounts:</strong> 10-25% off when bundled with auto insurance</li>
+                    </ul>
+                    <h4>What's Not Covered:</h4>
+                    <ul>
+                        <li><strong>Floods:</strong> Need separate flood insurance</li>
+                        <li><strong>Earthquakes:</strong> Separate earthquake coverage required</li>
+                        <li><strong>High-Value Items:</strong> Jewelry, art may need additional riders</li>
+                        <li><strong>Roommate's Property:</strong> Each person needs their own policy</li>
+                    </ul>
+                    <h4>Claim Process Tips:</h4>
+                    <ul>
+                        <li><strong>Document Everything:</strong> Photos, receipts, inventory lists</li>
+                        <li><strong>Report Quickly:</strong> Most companies require prompt notification</li>
+                        <li><strong>Police Reports:</strong> File for theft or vandalism</li>
+                        <li><strong>Replacement Cost:</strong> Choose replacement cost over actual cash value</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Home Maintenance & Utilities</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Basic maintenance knowledge saves money and prevents damage:</p>
+                    <h4>Tenant Maintenance Responsibilities:</h4>
+                    <ul>
+                        <li><strong>Light Bulbs:</strong> Replace bulbs, understand different types (LED recommended)</li>
+                        <li><strong>Air Filters:</strong> Change HVAC filters monthly (usually 1-3 inches thick)</li>
+                        <li><strong>Drain Maintenance:</strong> Use drain screens, avoid grease/hair buildup</li>
+                        <li><strong>Basic Cleaning:</strong> Regular cleaning prevents damage and pest issues</li>
+                    </ul>
+                    <h4>Utility Setup Process:</h4>
+                    <ul>
+                        <li><strong>Electric/Gas:</strong> Set up 1-2 weeks before move-in, bring ID and deposit</li>
+                        <li><strong>Internet:</strong> Compare providers, schedule installation 2+ weeks ahead</li>
+                        <li><strong>Water/Sewer:</strong> Often included in rent, sometimes separate billing</li>
+                        <li><strong>Trash/Recycling:</strong> Understand pickup schedules and rules</li>
+                    </ul>
+                    <h4>Emergency Protocols:</h4>
+                    <ul>
+                        <li><strong>Water Leaks:</strong> Know main water shutoff location, call landlord immediately</li>
+                        <li><strong>Power Outages:</strong> Check circuit breakers first, report outages to utility</li>
+                        <li><strong>Gas Leaks:</strong> Leave immediately, call gas company and fire department</li>
+                        <li><strong>Lockouts:</strong> Have spare key system, know locksmith contacts</li>
+                    </ul>
+                    <h4>Energy Efficiency Tips:</h4>
+                    <ul>
+                        <li><strong>Temperature Settings:</strong> 68°F winter, 78°F summer saves money</li>
+                        <li><strong>LED Bulbs:</strong> Use 75% less energy, last much longer</li>
+                        <li><strong>Unplug Electronics:</strong> Many devices draw power when off</li>
+                        <li><strong>Window Coverings:</strong> Use blinds/curtains to regulate temperature</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Rental Application Process</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -2677,84 +2920,6 @@
                         <li><strong>Application Speed:</strong> Submit same day as viewing in hot markets</li>
                         <li><strong>Offer Above Asking:</strong> Small premiums can win competitive situations</li>
                         <li><strong>Multiple Applications:</strong> Apply to several places simultaneously</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Lease Agreement Analysis</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Understanding your lease protects you legally and financially:</p>
-                    <h4>Critical Lease Clauses to Review:</h4>
-                    <ul>
-                        <li><strong>Rent Escalation:</strong> How much can rent increase and when?</li>
-                        <li><strong>Security Deposit Terms:</strong> Conditions for return, deductions allowed</li>
-                        <li><strong>Maintenance Responsibilities:</strong> What repairs are tenant vs. landlord responsibility?</li>
-                        <li><strong>Subletting Policy:</strong> Can you sublet or get roommates?</li>
-                        <li><strong>Pet Policy:</strong> Fees, restrictions, deposits</li>
-                        <li><strong>Parking:</strong> Included, additional cost, guest parking rules</li>
-                    </ul>
-                    <h4>Red Flag Lease Terms:</h4>
-                    <ul>
-                        <li><strong>Excessive Fees:</strong> Unreasonable cleaning, maintenance, or administrative fees</li>
-                        <li><strong>Automatic Renewal:</strong> Lease renews automatically without notice</li>
-                        <li><strong>Waived Rights:</strong> Clauses that waive tenant rights (often unenforceable)</li>
-                        <li><strong>Unclear Termination:</strong> Vague early termination or notice requirements</li>
-                    </ul>
-                    <h4>Negotiable Terms:</h4>
-                    <ul>
-                        <li><strong>Security Deposit:</strong> Sometimes negotiable, especially with good credit</li>
-                        <li><strong>Pet Fees:</strong> May waive pet deposit for well-trained animals</li>
-                        <li><strong>Lease Length:</strong> Shorter/longer terms for better rates</li>
-                        <li><strong>Included Utilities:</strong> Negotiate what's included in rent</li>
-                    </ul>
-                    <h4>Early Termination Strategies:</h4>
-                    <ul>
-                        <li><strong>Job Relocation:</strong> Some leases have military/job transfer clauses</li>
-                        <li><strong>Assignment/Subletting:</strong> Find replacement tenant with landlord approval</li>
-                        <li><strong>Negotiated Release:</strong> Pay fee to break lease (usually 1-2 months' rent)</li>
-                        <li><strong>Landlord Violations:</strong> Document habitability issues for legal basis</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Renter's Insurance Essentials</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Renter's insurance is cheap protection for your belongings and liability:</p>
-                    <h4>Coverage Types:</h4>
-                    <ul>
-                        <li><strong>Personal Property:</strong> Covers belongings (electronics, clothes, furniture)</li>
-                        <li><strong>Liability Protection:</strong> Covers damages you cause to others' property</li>
-                        <li><strong>Additional Living Expenses:</strong> Temporary housing if apartment becomes uninhabitable</li>
-                        <li><strong>Medical Payments:</strong> Small injuries to guests in your apartment</li>
-                    </ul>
-                    <h4>Cost Analysis (2025):</h4>
-                    <ul>
-                        <li><strong>Average Cost:</strong> $15-30/month ($180-360/year)</li>
-                        <li><strong>Coverage Amounts:</strong> $25,000-50,000 personal property typical</li>
-                        <li><strong>Deductibles:</strong> $250-1,000 (higher deductible = lower premium)</li>
-                        <li><strong>Bundling Discounts:</strong> 10-25% off when bundled with auto insurance</li>
-                    </ul>
-                    <h4>What's Not Covered:</h4>
-                    <ul>
-                        <li><strong>Floods:</strong> Need separate flood insurance</li>
-                        <li><strong>Earthquakes:</strong> Separate earthquake coverage required</li>
-                        <li><strong>High-Value Items:</strong> Jewelry, art may need additional riders</li>
-                        <li><strong>Roommate's Property:</strong> Each person needs their own policy</li>
-                    </ul>
-                    <h4>Claim Process Tips:</h4>
-                    <ul>
-                        <li><strong>Document Everything:</strong> Photos, receipts, inventory lists</li>
-                        <li><strong>Report Quickly:</strong> Most companies require prompt notification</li>
-                        <li><strong>Police Reports:</strong> File for theft or vandalism</li>
-                        <li><strong>Replacement Cost:</strong> Choose replacement cost over actual cash value</li>
                     </ul>
                 </div>
             </div>
@@ -2801,44 +2966,6 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Home Maintenance & Utilities</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Basic maintenance knowledge saves money and prevents damage:</p>
-                    <h4>Tenant Maintenance Responsibilities:</h4>
-                    <ul>
-                        <li><strong>Light Bulbs:</strong> Replace bulbs, understand different types (LED recommended)</li>
-                        <li><strong>Air Filters:</strong> Change HVAC filters monthly (usually 1-3 inches thick)</li>
-                        <li><strong>Drain Maintenance:</strong> Use drain screens, avoid grease/hair buildup</li>
-                        <li><strong>Basic Cleaning:</strong> Regular cleaning prevents damage and pest issues</li>
-                    </ul>
-                    <h4>Utility Setup Process:</h4>
-                    <ul>
-                        <li><strong>Electric/Gas:</strong> Set up 1-2 weeks before move-in, bring ID and deposit</li>
-                        <li><strong>Internet:</strong> Compare providers, schedule installation 2+ weeks ahead</li>
-                        <li><strong>Water/Sewer:</strong> Often included in rent, sometimes separate billing</li>
-                        <li><strong>Trash/Recycling:</strong> Understand pickup schedules and rules</li>
-                    </ul>
-                    <h4>Emergency Protocols:</h4>
-                    <ul>
-                        <li><strong>Water Leaks:</strong> Know main water shutoff location, call landlord immediately</li>
-                        <li><strong>Power Outages:</strong> Check circuit breakers first, report outages to utility</li>
-                        <li><strong>Gas Leaks:</strong> Leave immediately, call gas company and fire department</li>
-                        <li><strong>Lockouts:</strong> Have spare key system, know locksmith contacts</li>
-                    </ul>
-                    <h4>Energy Efficiency Tips:</h4>
-                    <ul>
-                        <li><strong>Temperature Settings:</strong> 68°F winter, 78°F summer saves money</li>
-                        <li><strong>LED Bulbs:</strong> Use 75% less energy, last much longer</li>
-                        <li><strong>Unplug Electronics:</strong> Many devices draw power when off</li>
-                        <li><strong>Window Coverings:</strong> Use blinds/curtains to regulate temperature</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Moving & Security Deposit Recovery</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -2872,6 +2999,46 @@
                         <li><strong>Small Claims Court:</strong> File if landlord wrongfully withholds deposit</li>
                         <li><strong>Tenant Rights Organizations:</strong> Get free advice from local tenant advocates</li>
                         <li><strong>Documentation:</strong> Photos, receipts, and lease terms are crucial evidence</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Lease Agreement Analysis</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Understanding your lease protects you legally and financially:</p>
+                    <h4>Critical Lease Clauses to Review:</h4>
+                    <ul>
+                        <li><strong>Rent Escalation:</strong> How much can rent increase and when?</li>
+                        <li><strong>Security Deposit Terms:</strong> Conditions for return, deductions allowed</li>
+                        <li><strong>Maintenance Responsibilities:</strong> What repairs are tenant vs. landlord responsibility?</li>
+                        <li><strong>Subletting Policy:</strong> Can you sublet or get roommates?</li>
+                        <li><strong>Pet Policy:</strong> Fees, restrictions, deposits</li>
+                        <li><strong>Parking:</strong> Included, additional cost, guest parking rules</li>
+                    </ul>
+                    <h4>Red Flag Lease Terms:</h4>
+                    <ul>
+                        <li><strong>Excessive Fees:</strong> Unreasonable cleaning, maintenance, or administrative fees</li>
+                        <li><strong>Automatic Renewal:</strong> Lease renews automatically without notice</li>
+                        <li><strong>Waived Rights:</strong> Clauses that waive tenant rights (often unenforceable)</li>
+                        <li><strong>Unclear Termination:</strong> Vague early termination or notice requirements</li>
+                    </ul>
+                    <h4>Negotiable Terms:</h4>
+                    <ul>
+                        <li><strong>Security Deposit:</strong> Sometimes negotiable, especially with good credit</li>
+                        <li><strong>Pet Fees:</strong> May waive pet deposit for well-trained animals</li>
+                        <li><strong>Lease Length:</strong> Shorter/longer terms for better rates</li>
+                        <li><strong>Included Utilities:</strong> Negotiate what's included in rent</li>
+                    </ul>
+                    <h4>Early Termination Strategies:</h4>
+                    <ul>
+                        <li><strong>Job Relocation:</strong> Some leases have military/job transfer clauses</li>
+                        <li><strong>Assignment/Subletting:</strong> Find replacement tenant with landlord approval</li>
+                        <li><strong>Negotiated Release:</strong> Pay fee to break lease (usually 1-2 months' rent)</li>
+                        <li><strong>Landlord Violations:</strong> Document habitability issues for legal basis</li>
                     </ul>
                 </div>
             </div>
@@ -2975,6 +3142,44 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Insurance Shopping Strategy</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Smart insurance shopping saves money while ensuring adequate protection:</p>
+                    <h4>Comparison Shopping Tips:</h4>
+                    <ul>
+                        <li><strong>Get Multiple Quotes:</strong> Compare at least 3-5 companies for each type</li>
+                        <li><strong>Apples-to-Apples:</strong> Ensure identical coverage amounts and deductibles</li>
+                        <li><strong>Bundle Discounts:</strong> Often 10-25% savings for multiple policies</li>
+                        <li><strong>Annual Reviews:</strong> Shop rates annually, loyalty doesn't always pay</li>
+                    </ul>
+                    <h4>Questions to Ask Agents:</h4>
+                    <ul>
+                        <li><strong>Coverage Gaps:</strong> What scenarios aren't covered?</li>
+                        <li><strong>Claim Process:</strong> How are claims filed and processed?</li>
+                        <li><strong>Discount Opportunities:</strong> What discounts am I eligible for?</li>
+                        <li><strong>Coverage Changes:</strong> How do life changes affect my coverage needs?</li>
+                    </ul>
+                    <h4>Red Flags to Avoid:</h4>
+                    <ul>
+                        <li><strong>Pressure Tactics:</strong> "Limited time offers" or high-pressure sales</li>
+                        <li><strong>Unlicensed Agents:</strong> Verify agent licensing with state insurance department</li>
+                        <li><strong>Too-Good-To-Be-True Rates:</strong> Extremely low quotes may have coverage gaps</li>
+                        <li><strong>Poor Customer Service:</strong> Difficulty reaching company or getting answers</li>
+                    </ul>
+                    <h4>Digital Tools & Resources:</h4>
+                    <ul>
+                        <li><strong>Progressive Snapshot:</strong> Usage-based auto insurance discounts</li>
+                        <li><strong>Insurance Apps:</strong> Most companies offer mobile apps for claims/payments</li>
+                        <li><strong>Comparison Sites:</strong> Insurify, The Zebra, NerdWallet for initial quotes</li>
+                        <li><strong>State Resources:</strong> State insurance department websites for complaint data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Disability Insurance</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -3014,51 +3219,6 @@
                         <li><strong>Waiting Period:</strong> 5 months before benefits begin</li>
                         <li><strong>Low Benefits:</strong> Average $1,200-1,500/month in 2025</li>
                         <li><strong>High Denial Rate:</strong> About 65% of initial applications denied</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Umbrella Insurance</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Umbrella insurance provides additional liability protection beyond your auto and home/renter's policies:</p>
-                    <h4>When You Need Umbrella Insurance:</h4>
-                    <ul>
-                        <li><strong>High Net Worth:</strong> Assets exceed your liability coverage limits</li>
-                        <li><strong>High Income:</strong> Future earnings need protection from lawsuits</li>
-                        <li><strong>Risk Factors:</strong> Pool, trampoline, aggressive dog, teen drivers</li>
-                        <li><strong>Professional Liability:</strong> Coaches, volunteers, social media presence</li>
-                    </ul>
-                    <h4>Coverage Gaps Umbrella Fills:</h4>
-                    <ul>
-                        <li><strong>Auto Liability Limits:</strong> Extends beyond auto policy limits</li>
-                        <li><strong>Personal Liability:</strong> Covers incidents not covered by other policies</li>
-                        <li><strong>Legal Defense:</strong> Pays attorney fees even for groundless lawsuits</li>
-                        <li><strong>Worldwide Coverage:</strong> Protects you anywhere in the world</li>
-                    </ul>
-                    <h4>Cost Analysis (2025):</h4>
-                    <ul>
-                        <li><strong>$1 Million Coverage:</strong> $200-400/year typical cost</li>
-                        <li><strong>Additional Coverage:</strong> $2-5 million costs $75-150/year more per million</li>
-                        <li><strong>Requirements:</strong> Must have underlying auto/home liability minimums</li>
-                        <li><strong>Bundling Discounts:</strong> Usually cheaper with same company as auto/home</li>
-                    </ul>
-                    <h4>What Umbrella Insurance Covers:</h4>
-                    <ul>
-                        <li><strong>Bodily Injury:</strong> Injuries you cause to others</li>
-                        <li><strong>Property Damage:</strong> Damage to others' property</li>
-                        <li><strong>Personal Injury:</strong> Libel, slander, false imprisonment</li>
-                        <li><strong>Legal Defense:</strong> Attorney fees and court costs</li>
-                    </ul>
-                    <h4>What's Not Covered:</h4>
-                    <ul>
-                        <li><strong>Intentional Acts:</strong> Deliberately causing harm</li>
-                        <li><strong>Business Activities:</strong> Need separate business liability insurance</li>
-                        <li><strong>Professional Services:</strong> Doctors, lawyers need professional liability</li>
-                        <li><strong>Property Damage:</strong> Your own property damage</li>
                     </ul>
                 </div>
             </div>
@@ -3113,38 +3273,45 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Insurance Shopping Strategy</span>
+                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Umbrella Insurance</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Smart insurance shopping saves money while ensuring adequate protection:</p>
-                    <h4>Comparison Shopping Tips:</h4>
+                    <p class="mb-4 text-slate-300">Umbrella insurance provides additional liability protection beyond your auto and home/renter's policies:</p>
+                    <h4>When You Need Umbrella Insurance:</h4>
                     <ul>
-                        <li><strong>Get Multiple Quotes:</strong> Compare at least 3-5 companies for each type</li>
-                        <li><strong>Apples-to-Apples:</strong> Ensure identical coverage amounts and deductibles</li>
-                        <li><strong>Bundle Discounts:</strong> Often 10-25% savings for multiple policies</li>
-                        <li><strong>Annual Reviews:</strong> Shop rates annually, loyalty doesn't always pay</li>
+                        <li><strong>High Net Worth:</strong> Assets exceed your liability coverage limits</li>
+                        <li><strong>High Income:</strong> Future earnings need protection from lawsuits</li>
+                        <li><strong>Risk Factors:</strong> Pool, trampoline, aggressive dog, teen drivers</li>
+                        <li><strong>Professional Liability:</strong> Coaches, volunteers, social media presence</li>
                     </ul>
-                    <h4>Questions to Ask Agents:</h4>
+                    <h4>Coverage Gaps Umbrella Fills:</h4>
                     <ul>
-                        <li><strong>Coverage Gaps:</strong> What scenarios aren't covered?</li>
-                        <li><strong>Claim Process:</strong> How are claims filed and processed?</li>
-                        <li><strong>Discount Opportunities:</strong> What discounts am I eligible for?</li>
-                        <li><strong>Coverage Changes:</strong> How do life changes affect my coverage needs?</li>
+                        <li><strong>Auto Liability Limits:</strong> Extends beyond auto policy limits</li>
+                        <li><strong>Personal Liability:</strong> Covers incidents not covered by other policies</li>
+                        <li><strong>Legal Defense:</strong> Pays attorney fees even for groundless lawsuits</li>
+                        <li><strong>Worldwide Coverage:</strong> Protects you anywhere in the world</li>
                     </ul>
-                    <h4>Red Flags to Avoid:</h4>
+                    <h4>Cost Analysis (2025):</h4>
                     <ul>
-                        <li><strong>Pressure Tactics:</strong> "Limited time offers" or high-pressure sales</li>
-                        <li><strong>Unlicensed Agents:</strong> Verify agent licensing with state insurance department</li>
-                        <li><strong>Too-Good-To-Be-True Rates:</strong> Extremely low quotes may have coverage gaps</li>
-                        <li><strong>Poor Customer Service:</strong> Difficulty reaching company or getting answers</li>
+                        <li><strong>$1 Million Coverage:</strong> $200-400/year typical cost</li>
+                        <li><strong>Additional Coverage:</strong> $2-5 million costs $75-150/year more per million</li>
+                        <li><strong>Requirements:</strong> Must have underlying auto/home liability minimums</li>
+                        <li><strong>Bundling Discounts:</strong> Usually cheaper with same company as auto/home</li>
                     </ul>
-                    <h4>Digital Tools & Resources:</h4>
+                    <h4>What Umbrella Insurance Covers:</h4>
                     <ul>
-                        <li><strong>Progressive Snapshot:</strong> Usage-based auto insurance discounts</li>
-                        <li><strong>Insurance Apps:</strong> Most companies offer mobile apps for claims/payments</li>
-                        <li><strong>Comparison Sites:</strong> Insurify, The Zebra, NerdWallet for initial quotes</li>
-                        <li><strong>State Resources:</strong> State insurance department websites for complaint data</li>
+                        <li><strong>Bodily Injury:</strong> Injuries you cause to others</li>
+                        <li><strong>Property Damage:</strong> Damage to others' property</li>
+                        <li><strong>Personal Injury:</strong> Libel, slander, false imprisonment</li>
+                        <li><strong>Legal Defense:</strong> Attorney fees and court costs</li>
+                    </ul>
+                    <h4>What's Not Covered:</h4>
+                    <ul>
+                        <li><strong>Intentional Acts:</strong> Deliberately causing harm</li>
+                        <li><strong>Business Activities:</strong> Need separate business liability insurance</li>
+                        <li><strong>Professional Services:</strong> Doctors, lawyers need professional liability</li>
+                        <li><strong>Property Damage:</strong> Your own property damage</li>
                     </ul>
                 </div>
             </div>
@@ -3210,6 +3377,44 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Skills Development & Continuous Learning</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Continuous skill development keeps you relevant and marketable in a rapidly changing economy:</p>
+                    <h4>Technical Skills Development:</h4>
+                    <ul>
+                        <li><strong>Industry-Specific Certifications:</strong> PMP, AWS, Google Analytics, Salesforce</li>
+                        <li><strong>Digital Literacy:</strong> Excel/Google Sheets proficiency, data analysis basics</li>
+                        <li><strong>Programming/Automation:</strong> Python, SQL, no-code tools increasingly valuable</li>
+                        <li><strong>AI/ML Literacy:</strong> Understanding ChatGPT, automation tools, AI applications</li>
+                    </ul>
+                    <h4>Soft Skills That Matter:</h4>
+                    <ul>
+                        <li><strong>Communication:</strong> Written, verbal, presentation skills</li>
+                        <li><strong>Leadership:</strong> Project management, team building, mentoring</li>
+                        <li><strong>Problem-Solving:</strong> Critical thinking, analytical skills, creativity</li>
+                        <li><strong>Emotional Intelligence:</strong> Self-awareness, empathy, relationship management</li>
+                    </ul>
+                    <h4>Learning Platforms & Resources:</h4>
+                    <ul>
+                        <li><strong>Online Courses:</strong> Coursera, Udemy, LinkedIn Learning, Pluralsight</li>
+                        <li><strong>Professional Development:</strong> Industry conferences, workshops, webinars</li>
+                        <li><strong>Formal Education:</strong> Graduate degrees, certificates, bootcamps</li>
+                        <li><strong>On-the-Job Learning:</strong> Stretch assignments, cross-training, job shadowing</li>
+                    </ul>
+                    <h4>Personal Branding:</h4>
+                    <ul>
+                        <li><strong>Expertise Development:</strong> Become known for specific skills or knowledge areas</li>
+                        <li><strong>Content Creation:</strong> Blog posts, articles, speaking engagements</li>
+                        <li><strong>Portfolio Building:</strong> Document and showcase your best work</li>
+                        <li><strong>Thought Leadership:</strong> Share insights and perspectives in your field</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Interview Preparation & Success</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -3249,52 +3454,6 @@
                         <li><strong>Personalization:</strong> Reference specific conversation points</li>
                         <li><strong>Additional Information:</strong> Provide any missing details or portfolio items</li>
                         <li><strong>Timeline Respect:</strong> Ask about next steps and respect their timeline</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Salary Negotiation Strategies</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Effective salary negotiation can increase your lifetime earnings by hundreds of thousands of dollars:</p>
-                    <h4>Market Research (Before Negotiating):</h4>
-                    <ul>
-                        <li><strong>Glassdoor & PayScale:</strong> Get salary ranges for your role and location</li>
-                        <li><strong>Industry Reports:</strong> Robert Half, Dice, industry associations publish salary guides</li>
-                        <li><strong>Network Intelligence:</strong> Ask connections about compensation ranges</li>
-                        <li><strong>Geographic Adjustments:</strong> Cost of living varies significantly by location</li>
-                    </ul>
-                    <h4>Total Compensation Analysis:</h4>
-                    <ul>
-                        <li><strong>Base Salary:</strong> Fixed annual income</li>
-                        <li><strong>Bonus Structure:</strong> Performance bonuses, signing bonuses, retention bonuses</li>
-                        <li><strong>Equity/Stock Options:</strong> Startup equity, RSUs, stock purchase plans</li>
-                        <li><strong>Benefits Value:</strong> Health insurance, 401k match, PTO, flexible work</li>
-                        <li><strong>Professional Development:</strong> Training budget, conference attendance, tuition reimbursement</li>
-                    </ul>
-                    <h4>Negotiation Timing & Strategy:</h4>
-                    <ul>
-                        <li><strong>New Job Offers:</strong> Best time to negotiate, you have the strongest position</li>
-                        <li><strong>Performance Reviews:</strong> Annual reviews with documented achievements</li>
-                        <li><strong>Role Expansion:</strong> When taking on additional responsibilities</li>
-                        <li><strong>Market Changes:</strong> When market rates increase significantly</li>
-                    </ul>
-                    <h4>Negotiation Scripts & Approaches:</h4>
-                    <ul>
-                        <li><strong>Opening:</strong> "I'm excited about this opportunity. Can we discuss the compensation package?"</li>
-                        <li><strong>Research-Based:</strong> "Based on my research, similar roles in this market range from $X to $Y"</li>
-                        <li><strong>Value-Focused:</strong> "Given my experience with [specific skill], I believe $X reflects my value"</li>
-                        <li><strong>Multiple Options:</strong> "I'd be comfortable with $X base, or $Y with additional equity"</li>
-                    </ul>
-                    <h4>Non-Salary Negotiables:</h4>
-                    <ul>
-                        <li><strong>Flexible Work Arrangements:</strong> Remote work, flexible hours, compressed work weeks</li>
-                        <li><strong>Additional PTO:</strong> Extra vacation days, sabbatical options</li>
-                        <li><strong>Professional Development:</strong> Conference budgets, certification funding, mentorship programs</li>
-                        <li><strong>Title Changes:</strong> Better title for future career mobility</li>
                     </ul>
                 </div>
             </div>
@@ -3378,38 +3537,46 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Skills Development & Continuous Learning</span>
+                    <span><span class="complexity-badge complexity-advanced">Advanced</span> Salary Negotiation Strategies</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Continuous skill development keeps you relevant and marketable in a rapidly changing economy:</p>
-                    <h4>Technical Skills Development:</h4>
+                    <p class="mb-4 text-slate-300">Effective salary negotiation can increase your lifetime earnings by hundreds of thousands of dollars:</p>
+                    <h4>Market Research (Before Negotiating):</h4>
                     <ul>
-                        <li><strong>Industry-Specific Certifications:</strong> PMP, AWS, Google Analytics, Salesforce</li>
-                        <li><strong>Digital Literacy:</strong> Excel/Google Sheets proficiency, data analysis basics</li>
-                        <li><strong>Programming/Automation:</strong> Python, SQL, no-code tools increasingly valuable</li>
-                        <li><strong>AI/ML Literacy:</strong> Understanding ChatGPT, automation tools, AI applications</li>
+                        <li><strong>Glassdoor & PayScale:</strong> Get salary ranges for your role and location</li>
+                        <li><strong>Industry Reports:</strong> Robert Half, Dice, industry associations publish salary guides</li>
+                        <li><strong>Network Intelligence:</strong> Ask connections about compensation ranges</li>
+                        <li><strong>Geographic Adjustments:</strong> Cost of living varies significantly by location</li>
                     </ul>
-                    <h4>Soft Skills That Matter:</h4>
+                    <h4>Total Compensation Analysis:</h4>
                     <ul>
-                        <li><strong>Communication:</strong> Written, verbal, presentation skills</li>
-                        <li><strong>Leadership:</strong> Project management, team building, mentoring</li>
-                        <li><strong>Problem-Solving:</strong> Critical thinking, analytical skills, creativity</li>
-                        <li><strong>Emotional Intelligence:</strong> Self-awareness, empathy, relationship management</li>
+                        <li><strong>Base Salary:</strong> Fixed annual income</li>
+                        <li><strong>Bonus Structure:</strong> Performance bonuses, signing bonuses, retention bonuses</li>
+                        <li><strong>Equity/Stock Options:</strong> Startup equity, RSUs, stock purchase plans</li>
+                        <li><strong>Benefits Value:</strong> Health insurance, 401k match, PTO, flexible work</li>
+                        <li><strong>Professional Development:</strong> Training budget, conference attendance, tuition reimbursement</li>
                     </ul>
-                    <h4>Learning Platforms & Resources:</h4>
+                    <h4>Negotiation Timing & Strategy:</h4>
                     <ul>
-                        <li><strong>Online Courses:</strong> Coursera, Udemy, LinkedIn Learning, Pluralsight</li>
-                        <li><strong>Professional Development:</strong> Industry conferences, workshops, webinars</li>
-                        <li><strong>Formal Education:</strong> Graduate degrees, certificates, bootcamps</li>
-                        <li><strong>On-the-Job Learning:</strong> Stretch assignments, cross-training, job shadowing</li>
+                        <li><strong>New Job Offers:</strong> Best time to negotiate, you have the strongest position</li>
+                        <li><strong>Performance Reviews:</strong> Annual reviews with documented achievements</li>
+                        <li><strong>Role Expansion:</strong> When taking on additional responsibilities</li>
+                        <li><strong>Market Changes:</strong> When market rates increase significantly</li>
                     </ul>
-                    <h4>Personal Branding:</h4>
+                    <h4>Negotiation Scripts & Approaches:</h4>
                     <ul>
-                        <li><strong>Expertise Development:</strong> Become known for specific skills or knowledge areas</li>
-                        <li><strong>Content Creation:</strong> Blog posts, articles, speaking engagements</li>
-                        <li><strong>Portfolio Building:</strong> Document and showcase your best work</li>
-                        <li><strong>Thought Leadership:</strong> Share insights and perspectives in your field</li>
+                        <li><strong>Opening:</strong> "I'm excited about this opportunity. Can we discuss the compensation package?"</li>
+                        <li><strong>Research-Based:</strong> "Based on my research, similar roles in this market range from $X to $Y"</li>
+                        <li><strong>Value-Focused:</strong> "Given my experience with [specific skill], I believe $X reflects my value"</li>
+                        <li><strong>Multiple Options:</strong> "I'd be comfortable with $X base, or $Y with additional equity"</li>
+                    </ul>
+                    <h4>Non-Salary Negotiables:</h4>
+                    <ul>
+                        <li><strong>Flexible Work Arrangements:</strong> Remote work, flexible hours, compressed work weeks</li>
+                        <li><strong>Additional PTO:</strong> Extra vacation days, sabbatical options</li>
+                        <li><strong>Professional Development:</strong> Conference budgets, certification funding, mentorship programs</li>
+                        <li><strong>Title Changes:</strong> Better title for future career mobility</li>
                     </ul>
                 </div>
             </div>
@@ -3506,6 +3673,51 @@
                         <li><strong>Blank Spaces:</strong> Never sign contracts with blank spaces to be "filled in later"</li>
                         <li><strong>Unclear Terms:</strong> Vague language often favors the party who wrote the contract</li>
                         <li><strong>Excessive Penalties:</strong> Unreasonable fees for early termination or changes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Small Claims Court & Legal Resources</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Small claims court provides an affordable way to resolve disputes without hiring an attorney:</p>
+                    <h4>When to Use Small Claims Court:</h4>
+                    <ul>
+                        <li><strong>Monetary Disputes:</strong> Security deposit disputes, unpaid debts, property damage</li>
+                        <li><strong>Amount Limits:</strong> Typically $5,000-$10,000 maximum (varies by state)</li>
+                        <li><strong>Simple Cases:</strong> Straightforward disputes with clear evidence</li>
+                        <li><strong>Cost-Effective:</strong> Filing fees usually $30-$100, no attorney needed</li>
+                    </ul>
+                    <h4>Filing Process:</h4>
+                    <ul>
+                        <li><strong>Proper Jurisdiction:</strong> File where defendant lives or where incident occurred</li>
+                        <li><strong>Required Information:</strong> Defendant's legal name and address</li>
+                        <li><strong>Documentation:</strong> Contracts, receipts, photographs, correspondence</li>
+                        <li><strong>Service of Process:</strong> Defendant must be properly notified of lawsuit</li>
+                    </ul>
+                    <h4>Case Preparation:</h4>
+                    <ul>
+                        <li><strong>Evidence Organization:</strong> Chronological order, copies for judge and defendant</li>
+                        <li><strong>Witness Coordination:</strong> Arrange for witnesses to attend hearing</li>
+                        <li><strong>Damage Calculation:</strong> Specific monetary amount with supporting documentation</li>
+                        <li><strong>Practice Presentation:</strong> Prepare clear, concise explanation of your case</li>
+                    </ul>
+                    <h4>Alternative Dispute Resolution:</h4>
+                    <ul>
+                        <li><strong>Mediation:</strong> Neutral third party helps facilitate agreement</li>
+                        <li><strong>Arbitration:</strong> Binding decision by neutral arbitrator</li>
+                        <li><strong>Settlement Negotiation:</strong> Direct negotiation before or during litigation</li>
+                        <li><strong>Cost Benefits:</strong> Usually faster and cheaper than court proceedings</li>
+                    </ul>
+                    <h4>When to Hire an Attorney:</h4>
+                    <ul>
+                        <li><strong>Complex Legal Issues:</strong> Constitutional rights, criminal charges, major contracts</li>
+                        <li><strong>High Stakes:</strong> Large monetary amounts, significant legal consequences</li>
+                        <li><strong>Specialized Areas:</strong> Immigration, intellectual property, business formation</li>
+                        <li><strong>Free Resources:</strong> Legal aid societies, law school clinics, bar association referrals</li>
                     </ul>
                 </div>
             </div>
@@ -3628,50 +3840,6 @@
                 </div>
             </div>
 
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Small Claims Court & Legal Resources</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Small claims court provides an affordable way to resolve disputes without hiring an attorney:</p>
-                    <h4>When to Use Small Claims Court:</h4>
-                    <ul>
-                        <li><strong>Monetary Disputes:</strong> Security deposit disputes, unpaid debts, property damage</li>
-                        <li><strong>Amount Limits:</strong> Typically $5,000-$10,000 maximum (varies by state)</li>
-                        <li><strong>Simple Cases:</strong> Straightforward disputes with clear evidence</li>
-                        <li><strong>Cost-Effective:</strong> Filing fees usually $30-$100, no attorney needed</li>
-                    </ul>
-                    <h4>Filing Process:</h4>
-                    <ul>
-                        <li><strong>Proper Jurisdiction:</strong> File where defendant lives or where incident occurred</li>
-                        <li><strong>Required Information:</strong> Defendant's legal name and address</li>
-                        <li><strong>Documentation:</strong> Contracts, receipts, photographs, correspondence</li>
-                        <li><strong>Service of Process:</strong> Defendant must be properly notified of lawsuit</li>
-                    </ul>
-                    <h4>Case Preparation:</h4>
-                    <ul>
-                        <li><strong>Evidence Organization:</strong> Chronological order, copies for judge and defendant</li>
-                        <li><strong>Witness Coordination:</strong> Arrange for witnesses to attend hearing</li>
-                        <li><strong>Damage Calculation:</strong> Specific monetary amount with supporting documentation</li>
-                        <li><strong>Practice Presentation:</strong> Prepare clear, concise explanation of your case</li>
-                    </ul>
-                    <h4>Alternative Dispute Resolution:</h4>
-                    <ul>
-                        <li><strong>Mediation:</strong> Neutral third party helps facilitate agreement</li>
-                        <li><strong>Arbitration:</strong> Binding decision by neutral arbitrator</li>
-                        <li><strong>Settlement Negotiation:</strong> Direct negotiation before or during litigation</li>
-                        <li><strong>Cost Benefits:</strong> Usually faster and cheaper than court proceedings</li>
-                    </ul>
-                    <h4>When to Hire an Attorney:</h4>
-                    <ul>
-                        <li><strong>Complex Legal Issues:</strong> Constitutional rights, criminal charges, major contracts</li>
-                        <li><strong>High Stakes:</strong> Large monetary amounts, significant legal consequences</li>
-                        <li><strong>Specialized Areas:</strong> Immigration, intellectual property, business formation</li>
-                        <li><strong>Free Resources:</strong> Legal aid societies, law school clinics, bar association referrals</li>
-                    </ul>
-                </div>
-            </div>
         </section>
 
         <section id="emergency" class="content-section">
@@ -3732,6 +3900,45 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Essential Document Organization</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Organized documents enable quick access during emergencies and prevent loss of important information:</p>
+                    <h4>Critical Documents List:</h4>
+                    <ul>
+                        <li><strong>Identity Documents:</strong> Birth certificate, passport, Social Security card, driver's license</li>
+                        <li><strong>Financial Documents:</strong> Bank account info, investment accounts, retirement accounts</li>
+                        <li><strong>Insurance Policies:</strong> Health, auto, renter's/homeowner's, life, disability</li>
+                        <li><strong>Legal Documents:</strong> Wills, power of attorney, marriage certificate, divorce decrees</li>
+                        <li><strong>Medical Records:</strong> Important medical history, prescription lists, allergies</li>
+                    </ul>
+                    <h4>Digital Storage Strategy:</h4>
+                    <ul>
+                        <li><strong>Cloud Backup:</strong> Google Drive, Dropbox, iCloud with strong passwords</li>
+                        <li><strong>Encryption:</strong> Use encrypted folders for sensitive documents</li>
+                        <li><strong>Multiple Locations:</strong> Store copies in different cloud services</li>
+                        <li><strong>Access Sharing:</strong> Share emergency access with trusted family members</li>
+                    </ul>
+                    <h4>Physical Storage Options:</h4>
+                    <ul>
+                        <li><strong>Fireproof Safe:</strong> Home safe for frequently needed documents</li>
+                        <li><strong>Safety Deposit Box:</strong> Bank vault for rarely needed originals</li>
+                        <li><strong>Trusted Family/Friends:</strong> Copies stored with people in other locations</li>
+                        <li><strong>Attorney/Financial Advisor:</strong> Some professionals store client documents</li>
+                    </ul>
+                    <h4>Regular Maintenance Schedule:</h4>
+                    <ul>
+                        <li><strong>Annual Review:</strong> Update all documents and contact information</li>
+                        <li><strong>Life Event Updates:</strong> Marriage, children, job changes, moves</li>
+                        <li><strong>Beneficiary Updates:</strong> Insurance, retirement accounts, bank accounts</li>
+                        <li><strong>Contact Information:</strong> Keep emergency contact lists current</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Financial Crisis Planning</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -3769,44 +3976,6 @@
                 </div>
             </div>
 
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Essential Document Organization</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Organized documents enable quick access during emergencies and prevent loss of important information:</p>
-                    <h4>Critical Documents List:</h4>
-                    <ul>
-                        <li><strong>Identity Documents:</strong> Birth certificate, passport, Social Security card, driver's license</li>
-                        <li><strong>Financial Documents:</strong> Bank account info, investment accounts, retirement accounts</li>
-                        <li><strong>Insurance Policies:</strong> Health, auto, renter's/homeowner's, life, disability</li>
-                        <li><strong>Legal Documents:</strong> Wills, power of attorney, marriage certificate, divorce decrees</li>
-                        <li><strong>Medical Records:</strong> Important medical history, prescription lists, allergies</li>
-                    </ul>
-                    <h4>Digital Storage Strategy:</h4>
-                    <ul>
-                        <li><strong>Cloud Backup:</strong> Google Drive, Dropbox, iCloud with strong passwords</li>
-                        <li><strong>Encryption:</strong> Use encrypted folders for sensitive documents</li>
-                        <li><strong>Multiple Locations:</strong> Store copies in different cloud services</li>
-                        <li><strong>Access Sharing:</strong> Share emergency access with trusted family members</li>
-                    </ul>
-                    <h4>Physical Storage Options:</h4>
-                    <ul>
-                        <li><strong>Fireproof Safe:</strong> Home safe for frequently needed documents</li>
-                        <li><strong>Safety Deposit Box:</strong> Bank vault for rarely needed originals</li>
-                        <li><strong>Trusted Family/Friends:</strong> Copies stored with people in other locations</li>
-                        <li><strong>Attorney/Financial Advisor:</strong> Some professionals store client documents</li>
-                    </ul>
-                    <h4>Regular Maintenance Schedule:</h4>
-                    <ul>
-                        <li><strong>Annual Review:</strong> Update all documents and contact information</li>
-                        <li><strong>Life Event Updates:</strong> Marriage, children, job changes, moves</li>
-                        <li><strong>Beneficiary Updates:</strong> Insurance, retirement accounts, bank accounts</li>
-                        <li><strong>Contact Information:</strong> Keep emergency contact lists current</li>
-                    </ul>
-                </div>
-            </div>
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
@@ -3950,6 +4119,44 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Online Shopping & Financial Safety</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Safe online shopping practices protect your financial information and prevent fraud:</p>
+                    <h4>Secure Shopping Practices:</h4>
+                    <ul>
+                        <li><strong>HTTPS Verification:</strong> Look for padlock icon and "https://" in URL</li>
+                        <li><strong>Legitimate Retailers:</strong> Shop with known, reputable businesses</li>
+                        <li><strong>Contact Information:</strong> Verify physical address and phone number</li>
+                        <li><strong>Customer Reviews:</strong> Check reviews but watch for fake positive reviews</li>
+                    </ul>
+                    <h4>Payment Method Selection:</h4>
+                    <ul>
+                        <li><strong>Credit Cards Best:</strong> Better fraud protection than debit cards</li>
+                        <li><strong>Virtual Card Numbers:</strong> Use temporary card numbers when available</li>
+                        <li><strong>PayPal Protection:</strong> Adds layer between merchant and your bank account</li>
+                        <li><strong>Avoid Wire Transfers:</strong> No protection against fraud</li>
+                    </ul>
+                    <h4>Subscription Management:</h4>
+                    <ul>
+                        <li><strong>Track Recurring Charges:</strong> Review bank/credit card statements monthly</li>
+                        <li><strong>Cancellation Procedures:</strong> Understand how to cancel before signing up</li>
+                        <li><strong>Free Trial Monitoring:</strong> Set reminders before trials expire</li>
+                        <li><strong>Subscription Tracking Apps:</strong> Truebill, Honey help manage subscriptions</li>
+                    </ul>
+                    <h4>Deal Evaluation:</h4>
+                    <ul>
+                        <li><strong>Price Comparison:</strong> Use Google Shopping, PriceGrabber, Shopzilla</li>
+                        <li><strong>Coupon Legitimacy:</strong> Use RetailMeNot, Honey for verified codes</li>
+                        <li><strong>Flash Sale Skepticism:</strong> "Limited time" offers often recurring</li>
+                        <li><strong>Shipping Costs:</strong> Factor total cost including shipping and taxes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Fintech Tools & Applications</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -3989,6 +4196,48 @@
                         <li><strong>Privacy Policies:</strong> Understand how companies use and share your data</li>
                         <li><strong>Security Measures:</strong> Look for bank-level encryption and security</li>
                         <li><strong>Fee Structures:</strong> Understand all costs, both obvious and hidden</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <button class="collapsible-header collapsed">
+                    <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Data Privacy & Protection</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="collapsible-content subsection-text-container">
+                    <p class="mb-4 text-slate-300">Protecting your financial data requires understanding how companies collect, use, and share your information:</p>
+                    <h4>Financial Data Sharing:</h4>
+                    <ul>
+                        <li><strong>Third-Party App Permissions:</strong> Understand what data budgeting apps access</li>
+                        <li><strong>Data Aggregation Services:</strong> Plaid, Yodlee connect apps to bank accounts</li>
+                        <li><strong>Opt-Out Rights:</strong> You can revoke access to your accounts at any time</li>
+                        <li><strong>Read Privacy Policies:</strong> Understand how your data is used and sold</li>
+                        <li><strong>Bank Data Sharing:</strong> Your bank may share information with affiliates</li>
+                    </ul>
+                    <h4>Identity Theft Prevention:</h4>
+                    <ul>
+                        <li><strong>Credit Report Monitoring:</strong> Check reports quarterly for unauthorized accounts</li>
+                        <li><strong>Credit Freeze:</strong> Prevent new accounts from being opened</li>
+                        <li><strong>Identity Monitoring Services:</strong> LifeLock, IdentityGuard alert to misuse</li>
+                        <li><strong>Social Security Number Protection:</strong> Never give SSN unless absolutely necessary</li>
+                        <li><strong>Secure Document Disposal:</strong> Shred financial documents before disposal</li>
+                    </ul>
+                    <h4>Digital Privacy Tools:</h4>
+                    <ul>
+                        <li><strong>VPN Services:</strong> Protect browsing on public Wi-Fi networks</li>
+                        <li><strong>Password Managers:</strong> Generate and store unique passwords securely</li>
+                        <li><strong>Two-Factor Authentication:</strong> Add extra security layer to financial accounts</li>
+                        <li><strong>Encrypted Communication:</strong> Use Signal, ProtonMail for sensitive messages</li>
+                        <li><strong>Browser Privacy Settings:</strong> Disable tracking, use private browsing mode</li>
+                    </ul>
+                    <h4>Data Breach Response:</h4>
+                    <ul>
+                        <li><strong>Immediate Actions:</strong> Change passwords, monitor accounts closely</li>
+                        <li><strong>Credit Monitoring:</strong> Watch for new accounts or inquiries</li>
+                        <li><strong>Fraud Alerts:</strong> Place alerts with credit bureaus</li>
+                        <li><strong>Documentation:</strong> Keep records of breach notifications and responses</li>
+                        <li><strong>Follow-up:</strong> Monitor credit reports for 12+ months after breach</li>
                     </ul>
                 </div>
             </div>
@@ -4040,82 +4289,6 @@
 
             <div class="collapsible-section">
                 <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-intermediate">Intermediate</span> Data Privacy & Protection</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Protecting your financial data requires understanding how companies collect, use, and share your information:</p>
-                    <h4>Financial Data Sharing:</h4>
-                    <ul>
-                        <li><strong>Third-Party App Permissions:</strong> Understand what data budgeting apps access</li>
-                        <li><strong>Data Aggregation Services:</strong> Plaid, Yodlee connect apps to bank accounts</li>
-                        <li><strong>Opt-Out Rights:</strong> You can revoke access to your accounts at any time</li>
-                        <li><strong>Read Privacy Policies:</strong> Understand how your data is used and sold</li>
-                    </ul>
-                    <h4>Social Media Financial Privacy:</h4>
-                    <ul>
-                        <li><strong>Spending Visibility:</strong> Avoid posting about expensive purchases or vacations</li>
-                        <li><strong>Location Services:</strong> Disable location sharing for financial apps</li>
-                        <li><strong>Income Information:</strong> Don't share salary or financial details publicly</li>
-                        <li><strong>Investment Bragging:</strong> Avoid posting investment gains or losses</li>
-                    </ul>
-                    <h4>Credit Monitoring & Identity Protection:</h4>
-                    <ul>
-                        <li><strong>Free vs. Paid Services:</strong> Credit Karma free, Experian Premium paid</li>
-                        <li><strong>Alert Management:</strong> Set up alerts for new accounts, credit inquiries</li>
-                        <li><strong>Dark Web Monitoring:</strong> Services scan for your personal information</li>
-                        <li><strong>Identity Theft Insurance:</strong> Coverage for recovery costs</li>
-                    </ul>
-                    <h4>Digital Document Security:</h4>
-                    <ul>
-                        <li><strong>Cloud Storage Encryption:</strong> Use encrypted cloud services for sensitive documents</li>
-                        <li><strong>Access Controls:</strong> Limit who can access your financial documents</li>
-                        <li><strong>Regular Backups:</strong> Multiple copies in different locations</li>
-                        <li><strong>Secure Deletion:</strong> Properly delete sensitive files from devices</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
-                    <span><span class="complexity-badge complexity-beginner">Beginner</span> Online Shopping & Financial Safety</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="collapsible-content subsection-text-container">
-                    <p class="mb-4 text-slate-300">Safe online shopping practices protect your financial information and prevent fraud:</p>
-                    <h4>Secure Shopping Practices:</h4>
-                    <ul>
-                        <li><strong>HTTPS Verification:</strong> Look for padlock icon and "https://" in URL</li>
-                        <li><strong>Legitimate Retailers:</strong> Shop with known, reputable businesses</li>
-                        <li><strong>Contact Information:</strong> Verify physical address and phone number</li>
-                        <li><strong>Customer Reviews:</strong> Check reviews but watch for fake positive reviews</li>
-                    </ul>
-                    <h4>Payment Method Selection:</h4>
-                    <ul>
-                        <li><strong>Credit Cards Best:</strong> Better fraud protection than debit cards</li>
-                        <li><strong>Virtual Card Numbers:</strong> Use temporary card numbers when available</li>
-                        <li><strong>PayPal Protection:</strong> Adds layer between merchant and your bank account</li>
-                        <li><strong>Avoid Wire Transfers:</strong> No protection against fraud</li>
-                    </ul>
-                    <h4>Subscription Management:</h4>
-                    <ul>
-                        <li><strong>Track Recurring Charges:</strong> Review bank/credit card statements monthly</li>
-                        <li><strong>Cancellation Procedures:</strong> Understand how to cancel before signing up</li>
-                        <li><strong>Free Trial Monitoring:</strong> Set reminders before trials expire</li>
-                        <li><strong>Subscription Tracking Apps:</strong> Truebill, Honey help manage subscriptions</li>
-                    </ul>
-                    <h4>Deal Evaluation:</h4>
-                    <ul>
-                        <li><strong>Price Comparison:</strong> Use Google Shopping, PriceGrabber, Shopzilla</li>
-                        <li><strong>Coupon Legitimacy:</strong> Use RetailMeNot, Honey for verified codes</li>
-                        <li><strong>Flash Sale Skepticism:</strong> "Limited time" offers often recurring</li>
-                        <li><strong>Shipping Costs:</strong> Factor total cost including shipping and taxes</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="collapsible-section">
-                <button class="collapsible-header collapsed">
                     <span><span class="complexity-badge complexity-advanced">Advanced</span> Emerging Financial Technology</span>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Expand section" role="img"><title>Click to expand section content</title><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -4161,7 +4334,8 @@
 
     <script>
         // --- Navigation Logic ---
-        const navLinks = document.querySelectorAll('nav a[href^="#"]'); // All nav links (desktop + mobile)
+        const navLinks = document.querySelectorAll('nav a[href^="#"]'); // All nav links (desktop + mobile + sidebar)
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
         const contentSections = document.querySelectorAll('.content-section');
         const homeSection = document.getElementById('home');
 
@@ -4172,18 +4346,58 @@
             navLinks.forEach(link => {
                 link.classList.remove('active');
             });
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+            });
 
             const targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.style.display = 'block';
-                // Update active state for both desktop and mobile nav links
+                // Update active state for desktop, mobile, and sidebar nav links
                 const desktopActiveLink = document.querySelector(`nav:not(#mobile-nav) a[href="#${sectionId}"]`);
                 const mobileActiveLink = document.querySelector(`#mobile-nav a[href="#${sectionId}"]`);
+                const sidebarActiveLink = document.querySelector(`.sidebar-link[href="#${sectionId}"]`);
                 if (desktopActiveLink) desktopActiveLink.classList.add('active');
                 if (mobileActiveLink) mobileActiveLink.classList.add('active');
+                if (sidebarActiveLink) sidebarActiveLink.classList.add('active');
             }
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            
+            // Update progress bar
+            updateProgressBar(sectionId);
         }
+
+        // Function to handle clicking the site title/logo to go home
+        function goHome() {
+            showSection('home');
+            // Close mobile menu if it's open
+            if (mobileNav && !mobileNav.classList.contains('hidden')) {
+                closeMobileMenu();
+            }
+        }
+
+        // --- Sidebar Progress Tracking ---
+        function updateProgressBar(currentSectionId) {
+            const sections = [
+                'home', 'health-insurance', 'retirement-investment', 'budgeting', 
+                'taxes', 'credit-debt', 'housing', 'insurance-beyond-health', 
+                'career', 'legal', 'emergency', 'digital-finance'
+            ];
+            
+            const currentIndex = sections.indexOf(currentSectionId);
+            const progressPercentage = currentIndex >= 0 ? Math.round((currentIndex / (sections.length - 1)) * 100) : 0;
+            
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-percentage');
+            
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progressPercentage}%`;
+                progressText.textContent = `${progressPercentage}%`;
+            }
+        }
+
+        // Initialize progress on page load
+        updateProgressBar('home');
 
         // --- Mobile Menu Toggle Logic ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
